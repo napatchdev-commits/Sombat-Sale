@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sombat Store - ร้านสมบัติ ซัพพลาย แอนด์ เซอร์วิส</title>
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Info Bar (Desktop only, hidden on mobile by CSS) -->
+  <div class="top-info-bar">
+    <div class="top-info-container">
+      <div class="top-info-links">
+        <span><i class="bx bxs-phone" style="color: var(--primary);"></i> 062-625-2564 , 062-692-0886</span>
+        <span><i class="bx bxs-map" style="color: var(--primary);"></i> 45/3 หมู่ 8 ต.ราษฎร์นิยม อ.ไทรน้อย จ.นนทบุรี</span>
+      </div>
+      <div class="top-info-right">
+        <span><i class="bx bxl-line" style="color: #06c755;"></i> @Sombatclub</span>
+        <span><i class="bx bxs-envelope" style="color: var(--secondary);"></i> Sombatoffice@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Search - Shopee-like Layout -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <span class="logo-title">SOMBAT STORE</span>
+          <span class="logo-sub">สมบัติ ซัพพลาย แอนด์ เซอร์วิส</span>
+        </div>
+      </a>
+      
+      <!-- Center Large Search Bar -->
+      <div class="header-search-wrapper">
+        <div class="header-search-form">
+          <input type="text" class="header-search-input" id="search-box" placeholder="พิมพ์ค้นหาได้ทุกอย่าง... (เช่น ดับเบิ้ลเอ, 70 แกรม, ล้างแอร์)">
+          <button class="header-search-btn" id="search-btn"><i class="bx bx-search"></i></button>
+        </div>
+      </div>
+      
+      <!-- Cart Icon Trigger -->
+      <div class="header-cart-wrapper">
+        <button class="cart-icon-btn" id="cart-trigger">
+          <i class="bx bx-cart"></i>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Promotional Banner Section -->
+    <div class="hero">
+      <div class="hero-content">
+        <span class="hero-tag">โปรโมชั่นพิเศษ</span>
+        <h1 class="hero-title">บริการติดตั้งระบบ Solar Cell คุ้มค่า ประหยัดไฟระยะยาว</h1>
+        <p class="hero-desc">ประหยัดค่าไฟสูงสุด 6,000 บาท/เดือน ฟรีค่าสำรวจหน้างาน รับประกันแผงเซลล์แสงอาทิตย์ 25 ปี พร้อมบริการสำรวจหน้างาน ฟรี!</p>
+        <div class="hero-buttons">
+          <button class="btn-primary" onclick="scrollToCategory('งานบริการ')">ดูบริการทั้งหมด</button>
+          <button class="btn-secondary" onclick="openQuoteModal('Solar Cell')">ขอใบเสนอราคาด่วน</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-image-box">
+          <i class="bx bx-sun" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+          <p style="font-weight: 600; font-size: 1.05rem; margin-bottom: 0.25rem;">Solar Cell Packages</p>
+          <p style="font-size: 0.8rem; color: #94a3b8;">เริ่มต้น 110,000 บาท</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Selector Grid Circles - Shopee style -->
+    <div class="category-box">
+      <div class="category-header">หมวดหมู่สินค้าและบริการ</div>
+      <div class="category-scroll" id="categories-list">
+        <div class="category-item active" data-category="all">
+          <div class="category-circle"><i class="bx bx-grid-alt"></i></div>
+          <span class="category-name">ทั้งหมด</span>
+        </div>
+        <div class="category-item" data-category="กระดาษ">
+          <div class="category-circle"><i class="bx bx-file"></i></div>
+          <span class="category-name">กระดาษ</span>
+        </div>
+        <div class="category-item" data-category="เครื่องเขียน">
+          <div class="category-circle"><i class="bx bx-edit"></i></div>
+          <span class="category-name">เครื่องเขียน</span>
+        </div>
+        <div class="category-item" data-category="ลวดเย็บ/เครื่องเย็บกระดาษ">
+          <div class="category-circle"><i class="bx bx-paperclip"></i></div>
+          <span class="category-name">เครื่องเย็บ</span>
+        </div>
+        <div class="category-item" data-category="เครื่องแต่งกายนักเรียน">
+          <div class="category-circle"><i class="bx bx-closet"></i></div>
+          <span class="category-name">ชุดนักเรียน</span>
+        </div>
+        <div class="category-item" data-category="สมุด / บิล / ใบเสร็จ">
+          <div class="category-circle"><i class="bx bx-book-open"></i></div>
+          <span class="category-name">สมุด/บิล</span>
+        </div>
+        <div class="category-item" data-category="งานบริการ">
+          <div class="category-circle"><i class="bx bx-wrench"></i></div>
+          <span class="category-name">งานบริการ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Storefront Section -->
+    <div class="shop-layout">
+      <!-- Filter and sort selection bar -->
+      <div class="filter-bar">
+        <div class="filter-left">
+          <span>รายการแนะนำสำหรับคุณ</span>
+        </div>
+        <select class="sort-select" id="sort-box">
+          <option value="default">เรียงลำดับมาตรฐาน</option>
+          <option value="price-asc">ราคา: ต่ำไปสูง</option>
+          <option value="price-desc">ราคา: สูงไปต่ำ</option>
+        </select>
+      </div>
+
+      <!-- Products Grid Container -->
+      <div class="products-grid" id="products-grid">
+        <!-- Loading Skeletons -->
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+        <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Drawer Overlay -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3 class="cart-title"><i class="bx bx-shopping-bag"></i> ตะกร้าสินค้าของคุณ</h3>
+      <button class="modal-close" id="cart-close"><i class="bx bx-x"></i></button>
+    </div>
+    <div class="cart-body" id="cart-items-container">
+      <!-- Cart Items populated via JS -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>ยอดรวมสินค้า:</span>
+        <span id="cart-total-val">0 บาท</span>
+      </div>
+      <button class="cart-btn-checkout" id="checkout-btn">ดำเนินการสั่งซื้อ <i class="bx bx-right-arrow-alt"></i></button>
+    </div>
+  </div>
+
+  <!-- Customer Clean Footer -->
+  <footer style="margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--surface-border); text-align: center; color: var(--text-muted); font-size: 0.8rem;">
+    <p>© 2026 Sombat Supply and Service Co., Ltd. All rights reserved.</p>
+  </footer>
+
+  <!-- Checkout/Order Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="bx bx-receipt"></i> กรอกข้อมูลจัดส่งและสั่งซื้อ</h3>
+        <button class="modal-close" id="checkout-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="order-form">
+          <div class="form-group">
+            <label class="form-label">ชื่อ-นามสกุล ผู้สั่งซื้อ *</label>
+            <input type="text" class="form-input" id="cust-name" required placeholder="เช่น คุณสมชาย ใจดี">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">เบอร์โทรศัพท์ติดต่อ *</label>
+              <input type="tel" class="form-input" id="cust-phone" required placeholder="เช่น 081-234-5678">
+            </div>
+            <div class="form-group">
+              <label class="form-label">อีเมล (ถ้ามี)</label>
+              <input type="email" class="form-input" id="cust-email" placeholder="เช่น somchai@gmail.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ที่อยู่สำหรับการจัดส่ง / สถานที่หน้างาน *</label>
+            <textarea class="form-textarea" id="cust-address" required placeholder="กรอกเลขที่บ้าน หมู่บ้าน ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">หมายเหตุการสั่งซื้อ / ความต้องการเพิ่มเติม</label>
+            <textarea class="form-textarea" id="order-notes" placeholder="เช่น ต้องการใบเสนอราคาก่อนจัดส่ง, ขนาดหน้างานติดตั้ง, หรือขอรายละเอียดเพิ่มเติม"></textarea>
+          </div>
+          
+          <div style="border-top: 1px solid var(--surface-border); padding-top: 1rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 0.85rem; color: var(--text-muted);">ยอดชำระสุทธิ:</span>
+              <div id="checkout-total-val" style="font-size: 1.3rem; font-weight: 800; color: var(--primary);">0 บาท</div>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+              <button type="button" class="btn-secondary" id="checkout-cancel">ย้อนกลับ</button>
+              <button type="submit" class="btn-primary" id="submit-order-btn">ยืนยันคำสั่งซื้อ <i class="bx bx-check-double"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Quote Request Modal (For Air-Conditioning & Solar Cells) -->
+  <div class="modal-overlay" id="quote-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quote-modal-title"><i class="bx bx-send"></i> ขอใบเสนอราคาค่าบริการ</h3>
+        <button class="modal-close" id="quote-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="quote-form">
+          <input type="hidden" id="quote-service-type">
+          <div class="form-group">
+            <label class="form-label">ชื่อผู้ติดต่อ *</label>
+            <input type="text" class="form-input" id="quote-name" required placeholder="ชื่อของคุณ">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">เบอร์โทรศัพท์ติดต่อ *</label>
+              <input type="tel" class="form-input" id="quote-phone" required placeholder="เบอร์โทรของคุณ">
+            </div>
+            <div class="form-group">
+              <label class="form-label">หมวดหมู่บริการ</label>
+              <input type="text" class="form-input" id="quote-display-category" readonly style="background-color: var(--light);">
+            </div>
+          </div>
+          <div class="form-group" id="quote-options-container">
+            <!-- Dynamically populated options depending on service type -->
+          </div>
+          <div class="form-group">
+            <label class="form-label">รายละเอียดความต้องการหน้างานเพิ่มเติม</label>
+            <textarea class="form-textarea" id="quote-details" required placeholder="อธิบายขนาดหน้างาน แบรนด์ที่สนใจ หรือรายละเอียดขนาดชิ้นงาน (เช่น ขนาดป้ายไวนิล)"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ที่อยู่สถานที่ติดตั้ง / สถานที่ปฏิบัติงาน *</label>
+            <textarea class="form-textarea" id="quote-address" required placeholder="ที่อยู่ที่ช่างต้องไปสำรวจหรือติดตั้ง"></textarea>
+          </div>
+          <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+            <button type="button" class="btn-secondary" id="quote-cancel-btn">ยกเลิก</button>
+            <button type="submit" class="btn-primary">ส่งคำขอเสนอราคา <i class="bx bx-mail-send"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Script logic -->
+  <script src="app.js"></script>
+</body>
+</html>
