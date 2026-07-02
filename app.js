@@ -8,7 +8,7 @@ if (paramApi) {
   // Clean query string from browser bar
   window.history.replaceState({}, document.title, window.location.pathname);
 } else {
-  API_URL = localStorage.getItem('sombat_api_url') || "";
+  API_URL = localStorage.getItem('sombat_api_url') || (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
 }
 
 let products = [];
@@ -447,9 +447,19 @@ orderForm.addEventListener('submit', async (e) => {
         method: "POST",
         body: JSON.stringify(orderPayload)
       });
-      const json = await response.json();
       
-      if (json.success) {
+      let success = false;
+      let orderId = "ORD-" + new Date().getTime().toString().substring(8);
+      try {
+        const text = await response.text();
+        const json = JSON.parse(text);
+        success = json.success;
+        if (orderId) orderId = json.orderId;
+      } catch (e) {
+        if (response.ok) success = true;
+      }
+      
+      if (success) {
         showToast(`🛒 สั่งซื้อเรียบร้อย! หมายเลขออเดอร์: ${json.orderId}`);
         cart = [];
         updateCartUI();
@@ -601,9 +611,17 @@ quoteForm.addEventListener('submit', async (e) => {
         method: "POST",
         body: JSON.stringify(orderPayload)
       });
-      const json = await response.json();
       
-      if (json.success) {
+      let success = false;
+      try {
+        const text = await response.text();
+        const json = JSON.parse(text);
+        success = json.success;
+      } catch (e) {
+        if (response.ok) success = true;
+      }
+      
+      if (success) {
         showToast(`📩 ส่งคำขอประเมินราคาเรียบร้อยแล้ว! รหัสอ้างอิง: ${json.orderId}`);
         closeQuote();
         quoteForm.reset();
