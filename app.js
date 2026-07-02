@@ -435,8 +435,7 @@ orderForm.addEventListener('submit', async (e) => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        body: JSON.stringify(orderPayload),
-        headers: { "Content-Type": "application/json" }
+        body: JSON.stringify(orderPayload)
       });
       const json = await response.json();
       
@@ -590,8 +589,7 @@ quoteForm.addEventListener('submit', async (e) => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        body: JSON.stringify(orderPayload),
-        headers: { "Content-Type": "application/json" }
+        body: JSON.stringify(orderPayload)
       });
       const json = await response.json();
       
