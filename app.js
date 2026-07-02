@@ -386,22 +386,24 @@ orderForm.addEventListener('submit', async (e) => {
       
       let success = false;
       let orderId = "ORD-" + new Date().getTime().toString().substring(8);
+      let responseMessage = "";
       try {
         const text = await response.text();
         const json = JSON.parse(text);
         success = json.success;
-        if (orderId) orderId = json.orderId;
+        if (json.orderId) orderId = json.orderId;
+        if (json.message) responseMessage = json.message;
       } catch (e) {
         if (response.ok) success = true;
       }
       
       if (success) {
-        showToast(`🛒 สั่งซื้อเรียบร้อย! หมายเลขออเดอร์: ${json.orderId}`);
+        showToast(`🛒 สั่งซื้อเรียบร้อย! หมายเลขออเดอร์: ${orderId}`);
         cart = [];
         updateCartUI();
         closeCheckout();
       } else {
-        showToast(`❌ สั่งซื้อผิดพลาด: ${json.message}`, "error");
+        showToast(`❌ สั่งซื้อผิดพลาด: ${responseMessage || "กรุณาลองใหม่อีกครั้ง"}`, "error");
       }
     } catch (err) {
       console.error(err);
@@ -549,20 +551,24 @@ quoteForm.addEventListener('submit', async (e) => {
       });
       
       let success = false;
+      let orderId = "REQ-" + new Date().getTime().toString().substring(8);
+      let responseMessage = "";
       try {
         const text = await response.text();
         const json = JSON.parse(text);
         success = json.success;
+        if (json.orderId) orderId = json.orderId;
+        if (json.message) responseMessage = json.message;
       } catch (e) {
         if (response.ok) success = true;
       }
       
       if (success) {
-        showToast(`📩 ส่งคำขอประเมินราคาเรียบร้อยแล้ว! รหัสอ้างอิง: ${json.orderId}`);
+        showToast(`📩 ส่งคำขอประเมินราคาเรียบร้อยแล้ว! รหัสอ้างอิง: ${orderId}`);
         closeQuote();
         quoteForm.reset();
       } else {
-        showToast(`❌ ส่งคำขอผิดพลาด: ${json.message}`, "error");
+        showToast(`❌ ส่งคำขอผิดพลาด: ${responseMessage || "กรุณาลองใหม่อีกครั้ง"}`, "error");
       }
     } catch (err) {
       console.error(err);
