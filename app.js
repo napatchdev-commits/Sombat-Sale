@@ -45,10 +45,9 @@ const quoteServiceType = document.getElementById('quote-service-type');
 const quoteDisplayCategory = document.getElementById('quote-display-category');
 const quoteModalTitle = document.getElementById('quote-modal-title');
 const quoteOptionsContainer = document.getElementById('quote-options-container');
-
 window.addEventListener('DOMContentLoaded', () => {
   if (!API_URL) {
-    showToast("⚠️ ระบบรันด้วยข้อมูลจำลอง (ยังไม่ได้เชื่อมต่อ Google Sheets)", "warning");
+    showToast("⚠️ ระบบยังไม่ได้รับการเชื่อมโยงคีย์ Google Sheets API", "warning");
     products = [...mockProducts];
     renderProducts(products);
   } else {
@@ -95,7 +94,7 @@ async function fetchProducts() {
     }
   } catch (err) {
     console.error(err);
-    showToast("❌ การเชื่อมต่อ API ผิดพลาด กำลังใช้ข้อมูลจำลองแทน", "error");
+    showToast("⚠️ การเชื่อมต่อระบบล้มเหลว กรุณาตรวจสอบอินเทอร์เน็ตหรือติดต่อผู้ดูแลระบบ", "error");
     useMockDataFallback();
   }
 }
