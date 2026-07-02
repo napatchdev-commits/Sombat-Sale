@@ -955,7 +955,19 @@ header {
   }
   
   .hero {
-    display: none; /* Hide promotional banner slider on small mobile screen */
+    display: flex !important;
+    padding: 1.5rem 1rem !important;
+    gap: 1rem !important;
+  }
+  .hero-title {
+    font-size: 1.5rem !important;
+  }
+  .hero-desc {
+    font-size: 0.85rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .hero-image {
+    max-width: 60% !important;
   }
   
   /* CRITICAL: Strictly 2 columns on mobile screen (Shopee layout style) */
