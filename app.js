@@ -1,15 +1,6 @@
 // --- API Configuration flow from URL ---
-let API_URL = "";
 const urlParams = new URLSearchParams(window.location.search);
-let paramApi = urlParams.get('api');
-if (paramApi) {
-  localStorage.setItem('sombat_api_url', paramApi);
-  API_URL = paramApi;
-  // Clean query string from browser bar
-  window.history.replaceState({}, document.title, window.location.pathname);
-} else {
-  API_URL = localStorage.getItem('sombat_api_url') || (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
-}
+let API_URL = urlParams.get('api') || (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
 
 let products = [];
 let cart = [];
