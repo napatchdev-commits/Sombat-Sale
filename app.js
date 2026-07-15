@@ -43,6 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
     showToast("⚠️ ระบบยังไม่ได้รับการเชื่อมโยงคีย์ Google Sheets API", "warning");
     products = [...mockProducts];
     renderProducts(products);
+    renderCategories(products);
   } else {
     fetchProducts();
   }
@@ -80,6 +81,7 @@ async function fetchProducts() {
     if (json.success) {
       products = json.data;
       renderProducts(products);
+      renderCategories(products);
       showToast("⚡ ดึงข้อมูลสินค้าจาก Google Sheets สำเร็จ");
     } else {
       showToast(`❌ ดึงข้อมูลล้มเหลว: ${json.message}`, "error");
@@ -95,6 +97,56 @@ async function fetchProducts() {
 function useMockDataFallback() {
   products = [...mockProducts];
   renderProducts(products);
+  renderCategories(products);
+}
+
+function renderCategories(productsList) {
+  const categories = ['all', ...new Set(productsList.map(p => p.Category).filter(Boolean))];
+  
+  const iconsMap = {
+    'all': 'bx-grid-alt',
+    'กระดาษ': 'bx-file',
+    'เครื่องเขียน': 'bx-edit',
+    'ลวดเย็บ,เครื่องเย็บ': 'bx-paperclip',
+    'เครื่องแต่งกาย': 'bx-closet',
+    'สมุด,บิล,ใบเสร็จ': 'bx-book-open',
+    'งานบริการ': 'bx-wrench',
+    'สินค้าไอที': 'bx-laptop',
+    'สินค้าอุปกรณ์กีฬา': 'bx-football',
+    'สินค้าอุปกรณ์ทำความสะอาด': 'bx-trash',
+    'สินค้าเบ็ดเตล็ด': 'bx-package',
+    'กรรไกร,คัตเตอร์': 'bx-cut',
+    'ไวท์บอร์ด,หมึก,ตรายาง': 'bx-paint-roll',
+    'อุปกรณ์ตกแต่ง,สติ๊กเกอร์': 'bx-palette',
+    'กาว,เทปกาว,เทปใส': 'bx-bookmark'
+  };
+
+  const container = document.getElementById('categories-list');
+  if (!container) return;
+
+  const activeTab = container.querySelector('.category-item.active');
+  const currentActiveCat = activeTab ? activeTab.dataset.category : 'all';
+
+  container.innerHTML = '';
+
+  categories.forEach(cat => {
+    const item = document.createElement('div');
+    item.className = `category-item${cat === currentActiveCat ? ' active' : ''}`;
+    item.dataset.category = cat;
+    
+    const icon = iconsMap[cat] || 'bx-package';
+    
+    let displayName = cat === 'all' ? 'ทั้งหมด' : cat;
+    if (displayName.length > 12) {
+      displayName = displayName.substring(0, 10) + '..';
+    }
+
+    item.innerHTML = `
+      <div class="category-circle"><i class="bx ${icon}"></i></div>
+      <span class="category-name">${displayName}</span>
+    `;
+    container.appendChild(item);
+  });
 }
 
 function renderProducts(items) {
