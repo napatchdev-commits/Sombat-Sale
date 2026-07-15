@@ -198,16 +198,7 @@ function filterProducts() {
   const category = activeTab ? activeTab.dataset.category : 'all';
   const searchQuery = searchBox.value.toLowerCase().trim();
   const sortBy = sortBox.value;
-  if (category === 'เครื่องแต่งกายนักเรียน') {
-    productsGrid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 6rem 2rem; color: var(--text-muted);">
-        <i class="bx bx-info-circle" style="font-size: 4rem; color: var(--secondary); margin-bottom: 1.25rem;"></i>
-        <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; font-family: var(--font-heading);">บริการนี้ยังไม่เปิดให้บริการ</h3>
-        <p style="font-size: 0.95rem; font-weight: 500;">ขออภัยในความไม่สะดวก</p>
-      </div>
-    `;
-    return;
-  }
+
 
   let filtered = [...products];
   
