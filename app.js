@@ -1,6 +1,10 @@
 // --- API Configuration flow from URL ---
 const urlParams = new URLSearchParams(window.location.search);
-let API_URL = urlParams.get('api') || (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
+const urlApi = urlParams.get('api');
+if (urlApi) {
+  localStorage.setItem('api_url', urlApi);
+}
+let API_URL = urlApi || localStorage.getItem('api_url') || (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
 
 let products = [];
 let cart = [];
