@@ -497,22 +497,38 @@ header {
 .product-tag {
   position: absolute;
   top: 6px;
-  left: 6px;
-  background-color: rgba(0, 85, 255, 0.1);
+  right: 6px; /* Moved to top-right to give room for the product ID on the left */
+  background-color: rgba(0, 85, 255, 0.15);
   color: var(--secondary);
   font-size: 0.65rem;
   font-weight: 700;
   padding: 0.15rem 0.45rem;
   border-radius: 2px;
   text-transform: uppercase;
-  z-index: 2;
+  z-index: 12;
   border: 1px solid rgba(0, 85, 255, 0.2);
 }
 
 .product-tag.service {
-  background-color: rgba(255, 85, 0, 0.1);
+  background-color: rgba(255, 85, 0, 0.15);
   color: var(--primary);
   border-color: rgba(255, 85, 0, 0.2);
+}
+
+.product-id-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background-color: #ef4444; /* bright red */
+  color: white !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+  z-index: 12;
+  letter-spacing: 0.5px;
+  font-family: monospace, var(--font-heading);
 }
 
 .product-body {

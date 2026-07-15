@@ -172,6 +172,7 @@ function renderProducts(items) {
     card.innerHTML = `
       <div class="product-tag ${isService ? 'service' : ''}">${isService ? 'งานบริการ' : 'สินค้า'}</div>
       <div class="product-img-wrapper" onclick="handleAddToCartClick('${prod.ID}')">
+        <span class="product-id-tag">${prod.ID}</span>
         <img src="${prod.ImageURL || 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=300'}" alt="${prod.Name}">
       </div>
       <div class="product-body" onclick="handleAddToCartClick('${prod.ID}')">
