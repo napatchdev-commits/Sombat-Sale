@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="api-warning-banner" style="display: none; background-color: #f59e0b; color: white; text-align: center; padding: 0.6rem; font-size: 0.85rem; font-weight: 600; z-index: 1000; position: relative;">
+    ⚠️ ระบบกำลังรันในโหมด Offline (ยังไม่ได้ระบุลิงก์เชื่อมต่อ Google Sheet ในไฟล์ config.js)
+  </div>
 
   <!-- Top Info Bar (Desktop only, hidden on mobile by CSS) -->
   <div class="top-info-bar">
@@ -55,23 +58,8 @@
 
   <div class="container">
     <!-- Promotional Banner Section -->
-    <div class="hero">
-      <div class="hero-content">
-        <span class="hero-tag">โปรโมชั่นพิเศษ</span>
-        <h1 class="hero-title">บริการติดตั้งระบบ Solar Cell คุ้มค่า ประหยัดไฟระยะยาว</h1>
-        <p class="hero-desc">ประหยัดค่าไฟสูงสุด 6,000 บาท/เดือน ฟรีค่าสำรวจหน้างาน รับประกันแผงเซลล์แสงอาทิตย์ 25 ปี พร้อมบริการสำรวจหน้างาน ฟรี!</p>
-        <div class="hero-buttons">
-          <button class="btn-primary" onclick="scrollToCategory('งานบริการ')">ดูบริการทั้งหมด</button>
-          <button class="btn-secondary" onclick="openQuoteModal('Solar Cell')">ขอใบเสนอราคาด่วน</button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <div class="hero-image-box">
-          <i class="bx bx-sun" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
-          <p style="font-weight: 600; font-size: 1.05rem; margin-bottom: 0.25rem;">Solar Cell Packages</p>
-          <p style="font-size: 0.8rem; color: #94a3b8;">เริ่มต้น 110,000 บาท</p>
-        </div>
-      </div>
+    <div class="store-banner-wrapper">
+      <img src="banner.png" alt="สมบัติซัพพลายแอนด์เซอร์วิส จำกัด" class="store-banner-img">
     </div>
 
     <!-- Category Selector Grid Circles - Shopee style -->

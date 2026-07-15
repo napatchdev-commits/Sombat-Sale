@@ -38,6 +38,8 @@ const quoteModalTitle = document.getElementById('quote-modal-title');
 const quoteOptionsContainer = document.getElementById('quote-options-container');
 window.addEventListener('DOMContentLoaded', () => {
   if (!API_URL) {
+    const banner = document.getElementById('api-warning-banner');
+    if (banner) banner.style.display = 'block';
     showToast("⚠️ ระบบยังไม่ได้รับการเชื่อมโยงคีย์ Google Sheets API", "warning");
     products = [...mockProducts];
     renderProducts(products);

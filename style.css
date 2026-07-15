@@ -235,19 +235,26 @@ header {
   padding: 1.5rem 2rem;
 }
 
-/* Banner Slider Section */
-.hero {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: white;
-  border-radius: var(--radius-sm);
-  padding: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.store-banner-wrapper {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  margin-bottom: 1.5rem;
-  position: relative;
+  background-color: #f97316;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.store-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.store-banner-img:hover {
+  transform: scale(1.008);
 }
 
 .hero-content {
@@ -954,20 +961,9 @@ header {
     padding: 0 0.75rem; /* narrow search button on mobile */
   }
   
-  .hero {
-    display: flex !important;
-    padding: 1.5rem 1rem !important;
-    gap: 1rem !important;
-  }
-  .hero-title {
-    font-size: 1.5rem !important;
-  }
-  .hero-desc {
-    font-size: 0.85rem !important;
+  .store-banner-wrapper {
     margin-bottom: 1rem !important;
-  }
-  .hero-image {
-    max-width: 60% !important;
+    border-radius: var(--radius-sm) !important;
   }
   
   /* CRITICAL: Strictly 2 columns on mobile screen (Shopee layout style) */
