@@ -9,6 +9,29 @@ let API_URL = urlApi || localStorage.getItem('api_url') || (typeof CONFIG !== 'u
 let products = [];
 let cart = [];
 
+function safeSaveCache(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    console.warn("Failed to cache " + key + " due to quota limit:", e);
+    try {
+      if (Array.isArray(data)) {
+        const stripped = data.map(item => {
+          const clone = { ...item };
+          if (clone.ImageURL && clone.ImageURL.startsWith('data:')) {
+            clone.ImageURL = "";
+          }
+          return clone;
+        });
+        localStorage.setItem(key, JSON.stringify(stripped));
+        console.log("Successfully cached stripped version of " + key);
+      }
+    } catch (innerEx) {
+      console.error("Failed to cache stripped version of " + key + ":", innerEx);
+    }
+  }
+}
+
 // Default Mock Data from catalog pages 14-18
 const mockProducts = [];
 
@@ -95,7 +118,7 @@ async function fetchProducts() {
     const json = await response.json();
     if (json.success) {
       products = json.data;
-      localStorage.setItem('sombat_local_products', JSON.stringify(json.data));
+      safeSaveCache('sombat_local_products', json.data);
       renderProducts(products);
       renderCategories(products);
     } else {
@@ -114,7 +137,7 @@ async function fetchProducts() {
           localStorage.setItem('api_url', defaultApi);
           
           products = json.data;
-          localStorage.setItem('sombat_local_products', JSON.stringify(json.data));
+          safeSaveCache('sombat_local_products', json.data);
           renderProducts(products);
           renderCategories(products);
           showToast("⚡ เชื่อมต่อ Google Sheets สำเร็จ (กู้คืนลิงก์เชื่อมต่อเริ่มต้น)");
