@@ -1,4 +1,4 @@
-// --- API Configuration flow from URL ---
+﻿// --- API Configuration flow from URL ---
 const urlParams = new URLSearchParams(window.location.search);
 const urlApi = urlParams.get('api');
 if (urlApi) {
@@ -68,33 +68,45 @@ function showToast(message, type = "success") {
 }
 
 async function fetchProducts() {
+  // Instantly load from cache to make storefront load in 0ms!
+  const cachedProducts = localStorage.getItem('sombat_local_products');
+  if (cachedProducts) {
+    products = JSON.parse(cachedProducts);
+    renderProducts(products);
+    renderCategories(products);
+  }
+
   if (!API_URL) return;
   
-  productsGrid.innerHTML = `
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-    <div class="product-card skeleton-loader" style="height: 280px;"></div>
-  `;
+  if (!cachedProducts) {
+    productsGrid.innerHTML = `
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+      <div class="product-card skeleton-loader" style="height: 280px;"></div>
+    `;
+  }
   
   try {
     const response = await fetch(`${API_URL}?action=getProducts`);
     const json = await response.json();
     if (json.success) {
       products = json.data;
+      localStorage.setItem('sombat_local_products', JSON.stringify(json.data));
       renderProducts(products);
       renderCategories(products);
-      showToast("⚡ ดึงข้อมูลสินค้าจาก Google Sheets สำเร็จ");
     } else {
       showToast(`❌ ดึงข้อมูลล้มเหลว: ${json.message}`, "error");
-      useMockDataFallback();
+      if (!cachedProducts) useMockDataFallback();
     }
   } catch (err) {
     console.error(err);
-    showToast("⚠️ การเชื่อมต่อระบบล้มเหลว กรุณาตรวจสอบอินเทอร์เน็ตหรือติดต่อผู้ดูแลระบบ", "error");
-    useMockDataFallback();
+    if (!cachedProducts) {
+      showToast("⚠️ การเชื่อมต่อระบบล้มเหลว กรุณาตรวจสอบอินเทอร์เน็ตหรือติดต่อผู้ดูแลระบบ", "error");
+      useMockDataFallback();
+    }
   }
 }
 
@@ -106,6 +118,40 @@ function useMockDataFallback() {
 
 function renderCategories(productsList) {
   const categories = ['all', ...new Set(productsList.map(p => p.Category).filter(Boolean))];
+  
+  const customCategoryOrder = [
+    "เครื่องเขียน",
+    "กระดาษ",
+    "สมุด,บิล,ใบเสร็จ",
+    "ไวท์บอร์ด,หมึก,ตรายาง",
+    "กรรไกร,คัตเตอร์",
+    "กาว,เทปกาว,เทปใส",
+    "ลวดเย็บ,เครื่องเย็บ",
+    "สินค้าไอที",
+    "สินค้าเบ็ดเตล็ด",
+    "อุปกรณ์ตกแต่ง,สติ๊กเกอร์",
+    "เครื่องแต่งกาย",
+    "สินค้าอุปกรณ์ทำความสะอาด",
+    "สินค้าอุปกรณ์กีฬา",
+    "งานบริการ",
+    "เครื่องปรับอากาศ/อะไหล่"
+  ];
+
+  const orderMap = {};
+  customCategoryOrder.forEach((cat, idx) => {
+    orderMap[cat] = idx;
+  });
+
+  categories.sort((a, b) => {
+    if (a === 'all') return -1;
+    if (b === 'all') return 1;
+    const idxA = orderMap[a] !== undefined ? orderMap[a] : 999;
+    const idxB = orderMap[b] !== undefined ? orderMap[b] : 999;
+    if (idxA === 999 && idxB === 999) {
+      return a.localeCompare(b, 'th');
+    }
+    return idxA - idxB;
+  });
   
   const iconsMap = {
     'all': 'bx-grid-alt',
@@ -122,7 +168,8 @@ function renderCategories(productsList) {
     'กรรไกร,คัตเตอร์': 'bx-cut',
     'ไวท์บอร์ด,หมึก,ตรายาง': 'bx-paint-roll',
     'อุปกรณ์ตกแต่ง,สติ๊กเกอร์': 'bx-palette',
-    'กาว,เทปกาว,เทปใส': 'bx-bookmark'
+    'กาว,เทปกาว,เทปใส': 'bx-bookmark',
+    'เครื่องปรับอากาศ/อะไหล่': 'bx-wind'
   };
 
   const container = document.getElementById('categories-list');
