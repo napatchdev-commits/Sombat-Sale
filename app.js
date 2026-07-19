@@ -76,7 +76,8 @@ async function fetchProducts() {
     renderCategories(products);
   }
 
-  if (!API_URL) return;
+  let currentApi = API_URL;
+  if (!currentApi) return;
   
   if (!cachedProducts) {
     productsGrid.innerHTML = `
@@ -90,7 +91,7 @@ async function fetchProducts() {
   }
   
   try {
-    const response = await fetch(`${API_URL}?action=getProducts`);
+    const response = await fetch(`${currentApi}?action=getProducts`);
     const json = await response.json();
     if (json.success) {
       products = json.data;
@@ -98,11 +99,32 @@ async function fetchProducts() {
       renderProducts(products);
       renderCategories(products);
     } else {
-      showToast(`❌ ดึงข้อมูลล้มเหลว: ${json.message}`, "error");
-      if (!cachedProducts) useMockDataFallback();
+      throw new Error("Primary API returned success: false");
     }
   } catch (err) {
-    console.error(err);
+    console.error("Primary storefront API fetch failed, trying fallback...", err);
+    // Auto-healing for storefront
+    const defaultApi = (typeof CONFIG !== 'undefined' ? CONFIG.API_URL : "");
+    if (defaultApi && currentApi !== defaultApi) {
+      try {
+        const response = await fetch(`${defaultApi}?action=getProducts`);
+        const json = await response.json();
+        if (json.success) {
+          API_URL = defaultApi;
+          localStorage.setItem('api_url', defaultApi);
+          
+          products = json.data;
+          localStorage.setItem('sombat_local_products', JSON.stringify(json.data));
+          renderProducts(products);
+          renderCategories(products);
+          showToast("⚡ เชื่อมต่อ Google Sheets สำเร็จ (กู้คืนลิงก์เชื่อมต่อเริ่มต้น)");
+          return;
+        }
+      } catch (fallbackErr) {
+        console.error("Fallback storefront API fetch also failed:", fallbackErr);
+      }
+    }
+    
     if (!cachedProducts) {
       showToast("⚠️ การเชื่อมต่อระบบล้มเหลว กรุณาตรวจสอบอินเทอร์เน็ตหรือติดต่อผู้ดูแลระบบ", "error");
       useMockDataFallback();
@@ -110,11 +132,6 @@ async function fetchProducts() {
   }
 }
 
-function useMockDataFallback() {
-  products = [...mockProducts];
-  renderProducts(products);
-  renderCategories(products);
-}
 
 function renderCategories(productsList) {
   const categories = ['all', ...new Set(productsList.map(p => p.Category).filter(Boolean))];
