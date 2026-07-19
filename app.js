@@ -1,4 +1,4 @@
-﻿// --- API Configuration flow from URL ---
+// --- API Configuration flow from URL ---
 const urlParams = new URLSearchParams(window.location.search);
 const urlApi = urlParams.get('api');
 if (urlApi) {
@@ -90,7 +90,72 @@ function showToast(message, type = "success") {
   }, 3500);
 }
 
+function checkMaintenance(maintenance) {
+  if (!maintenance) return;
+  const overlay = document.getElementById('maintenance-overlay');
+  if (maintenance.active) {
+    if (!overlay) {
+      const div = document.createElement('div');
+      div.id = 'maintenance-overlay';
+      div.style = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        box-sizing: border-box;
+        text-align: center;
+        font-family: 'Sarabun', sans-serif;
+        color: #1e293b;
+      `;
+      
+      div.innerHTML = `
+        <div style="background: white; padding: 3rem 2rem; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); max-width: 500px; width: 100%;">
+          <div style="background: #fef3c7; color: #d97706; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 1.5rem; animation: pulse 2s infinite;">
+            ⚠️
+          </div>
+          <h1 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 1rem; font-family: 'Sarabun', sans-serif;">ขออภัย ระบบอยู่ระหว่างการปรับปรุง</h1>
+          <p style="font-size: 1rem; color: #475569; margin-bottom: 1.5rem; line-height: 1.6; font-family: 'Sarabun', sans-serif;">
+            ${maintenance.message || "ระบบอยู่ระหว่างการเพิ่มประสิทธิภาพเพื่อการให้บริการที่ดียิ่งขึ้น"}
+          </p>
+          ${maintenance.date ? `
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
+              <strong style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; font-family: 'Sarabun', sans-serif;">คาดว่าจะเปิดให้บริการอีกครั้ง</strong>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-top: 0.25rem; font-family: 'Sarabun', sans-serif;">${maintenance.date}</div>
+            </div>
+          ` : ""}
+        </div>
+        <style>
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+          }
+          body { overflow: hidden !important; }
+        </style>
+      `;
+      document.body.appendChild(div);
+    }
+  } else {
+    if (overlay) {
+      overlay.remove();
+      document.body.style.overflow = '';
+    }
+  }
+}
+
 async function fetchProducts() {
+  const cachedMaintenance = localStorage.getItem('sombat_local_maintenance');
+  if (cachedMaintenance) {
+    try { checkMaintenance(JSON.parse(cachedMaintenance)); } catch(e) {}
+  }
+
   // Instantly load from cache to make storefront load in 0ms!
   const cachedProducts = localStorage.getItem('sombat_local_products');
   if (cachedProducts) {
@@ -117,6 +182,10 @@ async function fetchProducts() {
     const response = await fetch(`${currentApi}?action=getProducts`);
     const json = await response.json();
     if (json.success) {
+      if (json.maintenance) {
+        checkMaintenance(json.maintenance);
+        localStorage.setItem('sombat_local_maintenance', JSON.stringify(json.maintenance));
+      }
       products = json.data;
       safeSaveCache('sombat_local_products', json.data);
       renderProducts(products);
@@ -133,6 +202,10 @@ async function fetchProducts() {
         const response = await fetch(`${defaultApi}?action=getProducts`);
         const json = await response.json();
         if (json.success) {
+          if (json.maintenance) {
+            checkMaintenance(json.maintenance);
+            localStorage.setItem('sombat_local_maintenance', JSON.stringify(json.maintenance));
+          }
           API_URL = defaultApi;
           localStorage.setItem('api_url', defaultApi);
           
